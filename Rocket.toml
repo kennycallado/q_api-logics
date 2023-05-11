@@ -27,4 +27,4 @@ resource_url  = "http://localhost:8031/api/v1/resource"
 paper_url     = "http://localhost:8032/api/v1/paper"
 
 [default.databases.questions]
-url = "postgres://base:base@localhost/base"
+url = "postgres://logics:logics@localhost/logics"
