@@ -4,7 +4,7 @@ use crate::app::providers::interfaces::answer::PubNewAnswer;
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
 #[serde(crate = "rocket::serde")]
-pub struct PaperPush {
+pub struct PubPaperPush {
     pub id: i32,
     pub user_id: i32,
     pub user_record: rocket::serde::json::Value,
