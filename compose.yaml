@@ -38,63 +38,61 @@ services:
 #       - database
 # # }}}
 
-# # {{{ profiles - users - auth
-#   # {{{ profiles
-#   profiles_api:
-#     image: kennycallado/q-api-profiles:latest
-#     ports:
-#       - "8001:8000"
-#     expose:
-#       - "8001:8000"
-#     environment:
-#       - ROCKET_ADDRESS="0.0.0.0"
-#       - ROCKET_PORT=8000
-#       - ROCKET_SECRET_KEY=""
-#       - ROCKET_MIGRATIONS_RUN=true
-#       - ROCKET_DATABASES={questions={url="postgres://logics:logics@database/logics"}}
-#     depends_on:
-#       - database
-#       - fcm_api 
-#   # }}}
-#   
-#   # {{{ users
-#   users_api:
-#     image: kennycallado/q-api-users:latest
-#     ports:
-#       - "8002:8000"
-#     expose:
-#       - "8002:8000"
-#     environment:
-#       - ROCKET_ADDRESS="0.0.0.0"
-#       - ROCKET_PORT=8000
-#       - ROCKET_SECRET_KEY=""
-#       - ROCKET_MIGRATIONS_RUN=true
-#       - ROCKET_DATABASES={questions={url="postgres://logics:logics@database/logics"}}
-#     depends_on:
-#       - database
-#       - profiles_api
-#   # }}}
+# {{{ profiles - users - auth
+  # # {{{ profiles
+  # profiles_api:
+  #   image: kennycallado/q-api-profiles:latest
+  #   ports:
+  #     - "8001:8000"
+  #   expose:
+  #     - "8001:8000"
+  #   environment:
+  #     - ROCKET_ADDRESS="0.0.0.0"
+  #     - ROCKET_PORT=8000
+  #     - ROCKET_SECRET_KEY=""
+  #     - ROCKET_MIGRATIONS_RUN=true
+  #     - ROCKET_DATABASES={questions={url="postgres://logics:logics@database/logics"}}
+  #   depends_on:
+  #     - database
+  #     - fcm_api 
+  # # }}}
+  
+  # {{{ users
+  users_api:
+    image: kennycallado/q-api-users:latest
+    ports:
+      - "8002:8000"
+    expose:
+      - "8002:8000"
+    environment:
+      - ROCKET_ADDRESS="0.0.0.0"
+      - ROCKET_PORT=8000
+      - ROCKET_SECRET_KEY=""
+      - ROCKET_MIGRATIONS_RUN=true
+      - ROCKET_DATABASES={questions={url="postgres://logics:logics@database/logics"}}
+    depends_on:
+      - database
+  # }}}
 
-#   # {{{ auth
-#   auth_api:
-#     image: kennycallado/q-api-auth:latest
-#     # extra_hosts:
-#     #   - "host.docker.internal:host-gateway"
-#     ports:
-#       - "8003:8000"
-#     expose:
-#       - "8003:8000"
-#     environment:
-#       - ROCKET_ADDRESS="0.0.0.0"
-#       - ROCKET_PORT=8000
-#       - ROCKET_SECRET_KEY=""
-#       - ROCKET_PROFILE_URL="http://profiles_api:8000/api/v1/profile"
-#       - ROCKET_USER_URL="http://users_api:8000/api/v1/user"
-#     depends_on:
-#       - users_api
-#       - profiles_api
-#   # }}}
-# # }}}
+  # {{{ auth
+  auth_api:
+    image: kennycallado/q-api-auth:latest
+    # extra_hosts:
+    #   - "host.docker.internal:host-gateway"
+    ports:
+      - "8003:8000"
+    expose:
+      - "8003:8000"
+    environment:
+      - ROCKET_ADDRESS="0.0.0.0"
+      - ROCKET_PORT=8000
+      - ROCKET_SECRET_KEY=""
+      - ROCKET_PROFILE_URL="http://profiles_api:8000/api/v1/profile"
+      - ROCKET_USER_URL="http://users_api:8000/api/v1/user"
+    depends_on:
+      - users_api
+  # }}}
+# }}}
 
 # # {{{ questions - answers
 #   # {{{ questions
@@ -114,7 +112,7 @@ services:
 #       - users_api
 #   # }}}
 
-#   # {{{ ansers
+#   # {{{ answers
 #   answers_api:
 #     image: kennycallado/q-api-answers:latest
 #     ports:
@@ -151,44 +149,6 @@ services:
 #       - questions_api
 #       - answers_api
 #   # }}}
-#   
-#   # # {{{ forms
-#   # forms_api:
-#   #   image: kennycallado/q-api-forms:latest
-#   #   ports:
-#   #     - "8022:8000"
-#   #   expose:
-#   #     - "8022:8000"
-#   #   environment:
-#   #     - ROCKET_ADDRESS="0.0.0.0"
-#   #     - ROCKET_PORT=8000
-#   #     - ROCKET_SECRET_KEY=""
-#   #     - ROCKET_MIGRATIONS_RUN=true
-#   #     - ROCKET_DATABASES={questions={url="postgres://logics:logics@database/logics"}}
-#   #     - ROCKET_QUESTION_URL="http://questions_api:8000/api/v1/question"
-#   #   depends_on:
-#   #     - questions_api
-#   #     - slides_api
-#   # # }}}
-#   # 
-#   # # {{{ externals
-#   # externals_api:
-#   #   image: kennycallado/q-api-externals:latest
-#   #   ports:
-#   #     - "8023:8000"
-#   #   expose:
-#   #     - "8023:8000"
-#   #   environment:
-#   #     - ROCKET_ADDRESS="0.0.0.0"
-#   #     - ROCKET_PORT=8000
-#   #     - ROCKET_SECRET_KEY=""
-#   #     - ROCKET_MIGRATIONS_RUN=true
-#   #     - ROCKET_DATABASES={questions={url="postgres://logics:logics@database/logics"}}
-#   #     - ROCKET_QUESTION_URL="http://questions_api:8000/api/v1/question"
-#   #   depends_on:
-#   #     - questions_api
-#   #     - forms_api
-#   # # }}}
 # # }}}
 
 # # {{{ resources - papers
@@ -211,20 +171,20 @@ services:
 #     depends_on:
 #       - slides_api
 #   # }}}
-#   # # {{{ papers
-#   # papers_api:
-#   #   image: kennycallado/q-api-papers:latest
-#   #   ports:
-#   #     - "8032:8000"
-#   #   expose:
-#   #     - "8032:8000"
-#   #   environment:
-#   #     - ROCKET_ADDRESS="0.0.0.0"
-#   #     - ROCKET_PORT=8000
-#   #     - ROCKET_SECRET_KEY=""
-#   #     - ROCKET_MIGRATIONS_RUN=true
-#   #     - ROCKET_DATABASES={questions={url="postgres://logics:logics@database/logics"}}
-#   #   depends_on:
-#   #     - resources_api
-#   # # }}}
-# # }}}
+#   # {{{ papers
+#   papers_api:
+#     image: kennycallado/q-api-papers:latest
+#     ports:
+#       - "8032:8000"
+#     expose:
+#       - "8032:8000"
+#     environment:
+#       - ROCKET_ADDRESS="0.0.0.0"
+#       - ROCKET_PORT=8000
+#       - ROCKET_SECRET_KEY=""
+#       - ROCKET_MIGRATIONS_RUN=true
+#       - ROCKET_DATABASES={questions={url="postgres://logics:logics@database/logics"}}
+#     depends_on:
+#       - resources_api
+#   # }}}
+# }}}
