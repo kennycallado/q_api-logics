@@ -12,7 +12,8 @@ pub async fn send_to_checker(fetch: &State<Fetch>, paper: PubPaperPush) -> Resul
     let checker_url = ConfigGetter::get_entity_url("checker")
         .unwrap_or("http://localhost:3000/".to_string())
         + "project/"
-        + paper.project_id.to_string().as_str() ;
+        + paper.project_id.to_string().as_str()
+        + "/push"; 
 
     let fetch = fetch.client.lock().await;
     let res = fetch
