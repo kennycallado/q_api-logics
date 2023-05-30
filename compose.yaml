@@ -198,22 +198,22 @@ services:
     expose:
       - "3000:3000"
     depends_on:
-      - logics_api
+      - database
   # }}}
   
-  # {{{ logics
-  logics_api:
-    image: kennycallado/q-api-logics:latest
-    ports:
-      - "8041:8000"
-    expose:
-      - "8041:8000"
-    environment:
-      - ROCKET_ADDRESS="0.0.0.0"
-      - ROCKET_PORT=8000
-      - ROCKET_SECRET_KEY=""
-      - ROCKET_DATABASES={questions={url="postgres://base:base@database/base"}}
-    depends_on:
-      - papers_api
-  # }}}
+  # # {{{ logics
+  # logics_api:
+  #   image: kennycallado/q-api-logics:latest
+  #   ports:
+  #     - "8041:8000"
+  #   expose:
+  #     - "8041:8000"
+  #   environment:
+  #     - ROCKET_ADDRESS="0.0.0.0"
+  #     - ROCKET_PORT=8000
+  #     - ROCKET_SECRET_KEY=""
+  #     - ROCKET_DATABASES={questions={url="postgres://base:base@database/base"}}
+  #   depends_on:
+  #     - papers_api
+  # # }}}
 # }}}
