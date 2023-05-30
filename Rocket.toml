@@ -26,6 +26,7 @@ resource_url  = "http://localhost:8031/api/v1/resource"
 paper_url     = "http://localhost:8032/api/v1/paper"
 
 logic_url     = "http://localhost:8041/api/v1/logic"
+checker_url   = "http://localhost:3000/"
 
 [default.databases.questions]
 url = "postgres://logics:logics@localhost/logics"

@@ -23,6 +23,7 @@ pub struct ConfigGetter {
     pub paper_url: Option<String>,
     //
     pub logic_url: Option<String>,
+    pub checker_url: Option<String>,
 }
 
 impl ConfigGetter {
@@ -45,6 +46,7 @@ impl ConfigGetter {
             "paper" => ConfigGetter::get_paper_url(),
             //
             "logic" => ConfigGetter::get_logic_url(),
+            "checker" => ConfigGetter::get_checker_url(),
             _ => None,
         }
     }
@@ -147,5 +149,12 @@ impl ConfigGetter {
             .extract::<ConfigGetter>()
             .unwrap()
             .logic_url
+    }
+
+    fn get_checker_url() -> Option<String> {
+        rocket::Config::figment()
+            .extract::<ConfigGetter>()
+            .unwrap()
+            .checker_url
     }
 }
