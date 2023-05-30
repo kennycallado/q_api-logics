@@ -1,7 +1,5 @@
 use serde::{Deserialize, Serialize};
 
-// use crate::app::providers::interfaces::question::PubQuestion;
-
 #[derive(Debug, Clone, Deserialize, Serialize)]
 #[serde(crate = "rocket::serde")]
 pub struct PubAnswer {
