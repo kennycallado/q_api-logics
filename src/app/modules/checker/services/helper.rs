@@ -4,17 +4,19 @@ use rocket::serde::json::Json;
 
 use crate::app::modules::checker::model::PaperPushWithAction;
 
+use crate::app::providers::interfaces::helpers::config_getter::ConfigGetter;
 use crate::app::providers::interfaces::helpers::fetch::Fetch;
 use crate::app::providers::interfaces::paper::PubPaperPush;
 
 pub async fn send_to_checker(fetch: &State<Fetch>, paper: PubPaperPush) -> Result<Json<PubPaperPush>, Status> {
-    let url = "http://localhost:3000/project/".to_owned()
-        + paper.project_id.to_string().as_str()
-        + "/push";
+    let checker_url = ConfigGetter::get_entity_url("checker")
+        .unwrap_or("http://localhost:3000/".to_string())
+        + "project/"
+        + paper.project_id.to_string().as_str() ;
 
     let fetch = fetch.client.lock().await;
     let res = fetch
-        .post(url.as_str())
+        .post(checker_url)
         .header("Content-Type", "application/json")
         .json(&paper)
         .send().await;
