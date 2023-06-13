@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
-use crate::app::providers::services::answer::PubNewAnswer;
-use crate::app::providers::services::paper::PubPaperPush;
+use crate::app::providers::models::answer::PubNewAnswer;
+use crate::app::providers::models::paper::PubPaperPush;
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
 #[serde(crate = "rocket::serde")]
