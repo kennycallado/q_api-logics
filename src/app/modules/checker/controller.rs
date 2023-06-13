@@ -3,9 +3,8 @@ use rocket::serde::json::Json;
 use rocket::State;
 
 use crate::app::providers::guards::claims::AccessClaims;
-
-use crate::app::providers::interfaces::helpers::fetch::Fetch;
-use crate::app::providers::interfaces::paper::PubPaperPush;
+use crate::app::providers::models::paper::PubPaperPush;
+use crate::app::providers::services::fetch::Fetch;
 
 use crate::app::modules::checker::services::helper;
 

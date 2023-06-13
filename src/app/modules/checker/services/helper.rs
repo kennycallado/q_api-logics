@@ -2,11 +2,11 @@ use rocket::http::Status;
 use rocket::State;
 use rocket::serde::json::Json;
 
-use crate::app::modules::checker::model::PaperPushWithAction;
+use crate::app::providers::config_getter::ConfigGetter;
+use crate::app::providers::models::paper::PubPaperPush;
+use crate::app::providers::services::fetch::Fetch;
 
-use crate::app::providers::interfaces::helpers::config_getter::ConfigGetter;
-use crate::app::providers::interfaces::helpers::fetch::Fetch;
-use crate::app::providers::interfaces::paper::PubPaperPush;
+use crate::app::modules::checker::model::PaperPushWithAction;
 
 pub async fn send_to_checker(fetch: &State<Fetch>, paper: PubPaperPush) -> Result<Json<PubPaperPush>, Status> {
     let checker_url = ConfigGetter::get_entity_url("checker")
