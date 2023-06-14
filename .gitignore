@@ -2,4 +2,4 @@ Cargo.lock
 /target
 SCRIPTS/[0-9]*
 SCRIPTS/**/*.js
-!/SCRIPTS/example.js
+!/SCRIPTS/*_example*
