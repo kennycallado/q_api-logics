@@ -8,15 +8,15 @@ use crate::app::providers::services::fetch::Fetch;
 
 use crate::app::modules::checker::model::PaperPushWithAction;
 
-pub async fn send_to_checker(fetch: &State<Fetch>, paper: PubPaperPush) -> Result<Json<PubPaperPush>, Status> {
+pub async fn send_to_checker(fetch: &State<Fetch>, name: &str, paper: PubPaperPush) -> Result<Json<PubPaperPush>, Status> {
     let checker_url = ConfigGetter::get_entity_url("checker")
-        .unwrap_or("http://localhost:3000/".to_string())
-        + "project/"
-        + paper.project_id.to_string().as_str()
-        + "/push"; 
+        .unwrap_or("http://localhost:3000/checker/".to_string())
+        + name 
+        + "/project/"
+        + paper.project_id.to_string().as_str();
 
-    let fetch = fetch.client.lock().await;
-    let res = fetch
+    let client = fetch.client.lock().await;
+    let res = client
         .post(checker_url)
         .header("Content-Type", "application/json")
         .json(&paper)
