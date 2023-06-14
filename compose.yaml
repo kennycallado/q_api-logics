@@ -1,7 +1,7 @@
 version: "3.1"
 
 # Replace secret_key:
-# 11,$s/SECRET_KEY=""/SECRET_KEY=""
+# 11,$s/SECRET_KEY=""/SECRET_KEY="mVmYr1vb+ChQXwCGmVbzra6PGSO7vtnnmG5Q7FRw3+4="
 # 11,$s/SECRET_KEY="*.*"/SECRET_KEY=""
 #
 # Replace all the database credentials
@@ -31,7 +31,7 @@ services:
 #     environment:
 #       - ROCKET_ADDRESS="0.0.0.0"
 #       - ROCKET_PORT=8000
-#       - ROCKET_SECRET_KEY=""
+#       - ROCKET_SECRET_KEY="mVmYr1vb+ChQXwCGmVbzra6PGSO7vtnnmG5Q7FRw3+4="
 #       - ROCKET_MIGRATIONS_RUN=true
 #       - ROCKET_DATABASES={questions={url="postgres://logics:logics@database/logics"}}
 #     depends_on:
@@ -49,7 +49,7 @@ services:
   #   environment:
   #     - ROCKET_ADDRESS="0.0.0.0"
   #     - ROCKET_PORT=8000
-  #     - ROCKET_SECRET_KEY=""
+  #     - ROCKET_SECRET_KEY="mVmYr1vb+ChQXwCGmVbzra6PGSO7vtnnmG5Q7FRw3+4="
   #     - ROCKET_MIGRATIONS_RUN=true
   #     - ROCKET_DATABASES={questions={url="postgres://logics:logics@database/logics"}}
   #   depends_on:
@@ -67,7 +67,7 @@ services:
     environment:
       - ROCKET_ADDRESS="0.0.0.0"
       - ROCKET_PORT=8000
-      - ROCKET_SECRET_KEY=""
+      - ROCKET_SECRET_KEY="mVmYr1vb+ChQXwCGmVbzra6PGSO7vtnnmG5Q7FRw3+4="
       - ROCKET_DATABASES={questions={url="postgres://logics:logics@database/logics"}}
       - ROCKET_PROJECT_URL="http://projects_api:8000/api/v1/user"
       - ROCKET_FCM_URL="http://fcm_api:8000/api/v1/fcm/"
@@ -87,7 +87,7 @@ services:
     environment:
       - ROCKET_ADDRESS="0.0.0.0"
       - ROCKET_PORT=8000
-      - ROCKET_SECRET_KEY=""
+      - ROCKET_SECRET_KEY="mVmYr1vb+ChQXwCGmVbzra6PGSO7vtnnmG5Q7FRw3+4="
       - ROCKET_PROFILE_URL="http://profiles_api:8000/api/v1/profile"
       - ROCKET_USER_URL="http://users_api:8000/api/v1/user/"
     depends_on:
@@ -106,7 +106,7 @@ services:
 #     environment:
 #       - ROCKET_ADDRESS="0.0.0.0"
 #       - ROCKET_PORT=8000
-#       - ROCKET_SECRET_KEY=""
+#       - ROCKET_SECRET_KEY="mVmYr1vb+ChQXwCGmVbzra6PGSO7vtnnmG5Q7FRw3+4="
 #       - ROCKET_MIGRATIONS_RUN=true
 #       - ROCKET_DATABASES={questions={url="postgres://logics:logics@database/logics"}}
 #     depends_on:
@@ -123,7 +123,7 @@ services:
   #   environment:
   #     - ROCKET_ADDRESS="0.0.0.0"
   #     - ROCKET_PORT=8000
-  #     - ROCKET_SECRET_KEY=""
+  #     - ROCKET_SECRET_KEY="mVmYr1vb+ChQXwCGmVbzra6PGSO7vtnnmG5Q7FRw3+4="
   #     - ROCKET_DATABASES={questions={url="postgres://logics:logics@database/logics"}}
   #   depends_on:
   #     - questions_api
@@ -141,7 +141,7 @@ services:
   #   environment:
   #     - ROCKET_ADDRESS="0.0.0.0"
   #     - ROCKET_PORT=8000
-  #     - ROCKET_SECRET_KEY=""
+  #     - ROCKET_SECRET_KEY="mVmYr1vb+ChQXwCGmVbzra6PGSO7vtnnmG5Q7FRw3+4="
   #     - ROCKET_DATABASES={questions={url="postgres://logics:logics@database/logics"}}
   #     - ROCKET_QUESTION_URL="http://questions_api:8000/api/v1/question"
   #   depends_on:
@@ -160,7 +160,7 @@ services:
   #   environment:
   #     - ROCKET_ADDRESS="0.0.0.0"
   #     - ROCKET_PORT=8000
-  #     - ROCKET_SECRET_KEY=""
+  #     - ROCKET_SECRET_KEY="mVmYr1vb+ChQXwCGmVbzra6PGSO7vtnnmG5Q7FRw3+4="
   #     - ROCKET_DATABASES={questions={url="postgres://logics:logics@database/logics"}}
   #     - ROCKET_SLIDE_URL="http://slides_api:8000/api/v1/slide/"
   #   depends_on:
@@ -177,7 +177,7 @@ services:
   #   environment:
   #     - ROCKET_ADDRESS="0.0.0.0"
   #     - ROCKET_PORT=8000
-  #     - ROCKET_SECRET_KEY=""
+  #     - ROCKET_SECRET_KEY="mVmYr1vb+ChQXwCGmVbzra6PGSO7vtnnmG5Q7FRw3+4="
   #     - ROCKET_DATABASES={questions={url="postgres://logics:logics@database/logics"}}
   #   depends_on:
   #     - resources_api
@@ -192,6 +192,8 @@ services:
       - "3000:3000"
     expose:
       - "3000:3000"
+    volumes:
+      - "./SCRIPTS:/app/SCRIPTS"
   # }}}
   
   # # {{{ logics
@@ -204,7 +206,7 @@ services:
   #   environment:
   #     - ROCKET_ADDRESS="0.0.0.0"
   #     - ROCKET_PORT=8000
-  #     - ROCKET_SECRET_KEY=""
+  #     - ROCKET_SECRET_KEY="mVmYr1vb+ChQXwCGmVbzra6PGSO7vtnnmG5Q7FRw3+4="
   #     - ROCKET_DATABASES={questions={url="postgres://logics:logics@database/logics"}}
   #     - ROCKET_CHECKER_URL="http://checker_api:3000/"
   #   depends_on:
@@ -224,7 +226,7 @@ services:
 #     environment:
 #       - ROCKET_ADDRESS="0.0.0.0"
 #       - ROCKET_PORT=8000
-#       - ROCKET_SECRET_KEY=""
+#       - ROCKET_SECRET_KEY="mVmYr1vb+ChQXwCGmVbzra6PGSO7vtnnmG5Q7FRw3+4="
 #       - ROCKET_DATABASES={questions={url="postgres://logics:logics@database/logics"}}
 #     depends_on:
 #       - database
