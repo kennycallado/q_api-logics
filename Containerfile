@@ -6,8 +6,6 @@ ARG PACKAGE_NAME="q-api-logics"
 COPY ./target/x86_64-unknown-linux-musl/release/$PACKAGE_NAME /bin/$PACKAGE_NAME
 COPY ./Rocket.toml /root
 
-RUN mkdir -p /root/SCRIPTS
-
 WORKDIR /root
 
 CMD [ "q-api-logics" ]
