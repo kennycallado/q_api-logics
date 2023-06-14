@@ -28,7 +28,7 @@ GET http://localhost:8000/health
 # }}}
 
 ### auth bypass
-GET https://questions.kennycallado.dev/auth/bypass/1
+GET http://localhost:8003/auth/bypass/1
 Accept: application/json
 
 # {{{ Checker
@@ -54,12 +54,12 @@ Content-Type: application/json
 
 GET http://localhost:8000/api/v1/logic/checker
 Accept: application/json
-Authorization: Bearer <token>
+Authorization: Bearer 
 Content-type: application/json
 
 POST http://localhost:8000/api/v1/logic/checker
 Accept: application/json
-Authorization: Bearer <token>
+Authorization: Bearer 
 Content-type: application/json
 
 {
@@ -76,5 +76,20 @@ Content-type: application/json
     { "question_id": 5, "answer": "5" }
   ]
 }
+
+# }}}
+
+# {{{ Scripts
+
+## To upload a script
+curl -F 'data=@SCRIPTS/example.js' http://localhost:8000/api/v1/logic/script/cron/project/1
+
+# export TOKEN=$(curl http://localhost:8003/auth/bypass/1/ | jq .access_token | tr -d '\"')
+cat SCRIPTS/example.js | curl -H 'Authorization: Bearer '$TOKEN --data-binary @- http://localhost:8000/api/v1/logic/script/push/project/3
+
+GET http://localhost:8000/api/v1/logic/script/push/project/2
+Accept: application/json
+Authorization: Bearer 
+Content-type: application/json
 
 # }}}
