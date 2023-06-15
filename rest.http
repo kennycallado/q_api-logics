@@ -33,7 +33,7 @@ Accept: application/json
 
 # {{{ Checker
 
-POST http://localhost:3000/checker/steps/project/3
+POST http://localhost:3000/checker/steps/project/1
 Accept: application/json
 Content-Type: application/json
 
@@ -67,16 +67,16 @@ Content-Type: application/json
   }
 ]
 
-POST http://localhost:3000/checker/push/project/2
+POST http://localhost:3000/checker/push/project/1
 Accept: application/json
 Content-Type: application/json
 
 {
   "id": 1,
   "user_id": 1,
-  "user_record": { "step": 5, "mood": 45 },
+  "user_record": { "step": 1, "mood": 45 },
   "project_id": 1,
-  "resource_id": 50,
+  "resource_id": 10,
   "completed": false,
   "answers": [
     { "question_id": 1, "answer": 10 },
@@ -91,7 +91,7 @@ Accept: application/json
 Authorization: Bearer 
 Content-type: application/json
 
-POST http://localhost:8000/api/v1/logic/checker
+POST http://localhost:8000/api/v1/logic/checker/push
 Accept: application/json
 Authorization: Bearer 
 Content-type: application/json
@@ -99,9 +99,29 @@ Content-type: application/json
 {
   "id": 1,
   "user_id": 1,
-  "user_record": { "step": 5, "mood": 45 },
+  "user_record": { "step": 4, "mood": 45 },
   "project_id": 1,
-  "resource_id": 50,
+  "resource_id": 41,
+  "completed": false,
+  "answers": [
+    { "question_id": 1, "answer": "10" },
+    { "question_id": 2, "answer": "10" },
+    { "question_id": 3, "answer": "10" },
+    { "question_id": 5, "answer": "5" }
+  ]
+}
+
+POST http://localhost:8000/api/v1/logic/checker/push
+Accept: application/json
+Authorization: Bearer 
+Content-type: application/json
+
+{
+  "id": 1,
+  "user_id": 1,
+  "user_record": { "step": 4, "mood": 45 },
+  "project_id": 1,
+  "resource_id": 41,
   "completed": false,
   "answers": [
     { "question_id": 1, "answer": "10" },
@@ -115,11 +135,10 @@ Content-type: application/json
 
 # {{{ Scripts
 
-## To upload a script
-curl -F 'data=@SCRIPTS/example.js' http://localhost:8000/api/v1/logic/script/cron/project/1
-
 # export TOKEN=$(curl http://localhost:8003/auth/bypass/1/ | jq .access_token | tr -d '\"')
-cat SCRIPTS/example.js | curl -H 'Authorization: Bearer '$TOKEN --data-binary @- http://localhost:8000/api/v1/logic/script/push/project/3
+# cat SCRIPTS/push_example.js | curl -H 'Authorization: Bearer '$TOKEN --data-binary @- http://localhost:8000/api/v1/logic/script/push/project/1
+
+# cat SCRIPTS/cron_example.js | curl -H 'Authorization: Bearer '$TOKEN --data-binary @- http://localhost:8000/api/v1/logic/script/steps/project/1
 
 GET http://localhost:8000/api/v1/logic/script/push/project/2
 Accept: application/json

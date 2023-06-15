@@ -8,7 +8,7 @@ switch (user.record.step) {
     }
     delete user.record.strike;
 
-    user.resource_complete(user.paper.resource_id);
+    user.resource_completed(user.paper.resource_id);
     user.add_resource(20);
     user.record.step = 2;
     break;
@@ -22,7 +22,7 @@ switch (user.record.step) {
     }
     delete user.record.strike;
 
-    user.resource_complete(user.paper.resource_id);
+    user.resource_completed(user.paper.resource_id);
     user.add_resource(50);
     user.record.step = 5;
     break;
