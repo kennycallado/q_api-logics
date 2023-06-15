@@ -2,25 +2,29 @@ use rocket::http::Status;
 use rocket::State;
 use rocket::serde::json::Json;
 
+use crate::app::modules::action::model::Action;
 use crate::app::providers::config_getter::ConfigGetter;
 use crate::app::providers::models::paper::PubPaperPush;
 use crate::app::providers::services::fetch::Fetch;
 
 use crate::app::modules::checker::model::PaperPushWithAction;
 
-pub async fn send_to_checker(fetch: &State<Fetch>, paper: PubPaperPush) -> Result<Json<PubPaperPush>, Status> {
+pub async fn send_to_checker(fetch: &State<Fetch>, name: &str, paper: PubPaperPush) -> Result<Json<PubPaperPush>, Status> {
     let checker_url = ConfigGetter::get_entity_url("checker")
-        .unwrap_or("http://localhost:3000/".to_string())
-        + "project/"
-        + paper.project_id.to_string().as_str()
-        + "/push"; 
+        .unwrap_or("http://localhost:3000/checker/".to_string())
+        + name 
+        + "/project/"
+        + paper.project_id.to_string().as_str();
 
-    let fetch = fetch.client.lock().await;
-    let res = fetch
-        .post(checker_url)
-        .header("Content-Type", "application/json")
-        .json(&paper)
-        .send().await;
+    let res;
+    {
+        let client = fetch.client.lock().await;
+        res = client
+            .post(checker_url)
+            .header("Content-Type", "application/json")
+            .json(&paper)
+            .send().await;
+    }
 
     match res {
         Ok(res) => {
@@ -30,11 +34,30 @@ pub async fn send_to_checker(fetch: &State<Fetch>, paper: PubPaperPush) -> Resul
 
             let paper_with_actions = res.json::<PaperPushWithAction>().await.unwrap();
 
-            if paper_with_actions.actions.is_some() {
-                // TODO: Execute the actions
+            println!("Paper with actions: {:?}", paper_with_actions.actions);
+
+            let blah = paper_with_actions.clone();
+            match blah.actions.clone() {
+                Some(actions) => {
+                    let paper_with = blah.clone().into();
+
+                    for action in actions {
+                        match action.execute_action(fetch, &paper_with).await {
+                            Ok(_) => (),
+                            Err(s) => {
+                                println!("Error executing action: {}", action.action);
+                                println!("Error: {}", s);
+                            },
+                        }
+                    }
+
+                    // paper_with.into()
+                },
+                // None => blah.into(),
+                None => {}
             }
 
-            // Return the paper
+            // Ok(Json(paper_push))
             Ok(Json(paper_with_actions.into()))
         },
         Err(_) => Err(Status::InternalServerError),
