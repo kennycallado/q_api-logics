@@ -13,3 +13,12 @@ pub struct PubPaperPush {
     pub completed: bool,
     pub answers: Option<Vec<PubNewAnswer>>,
 }
+
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(crate = "rocket::serde")]
+pub struct PubNewPaper {
+    pub user_id: i32,
+    pub project_id: i32,
+    pub resource_id: i32,
+    pub completed: bool,
+}

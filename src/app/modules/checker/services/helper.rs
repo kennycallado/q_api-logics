@@ -2,6 +2,7 @@ use rocket::http::Status;
 use rocket::State;
 use rocket::serde::json::Json;
 
+use crate::app::modules::action::model::Action;
 use crate::app::providers::config_getter::ConfigGetter;
 use crate::app::providers::models::paper::PubPaperPush;
 use crate::app::providers::services::fetch::Fetch;
@@ -15,12 +16,15 @@ pub async fn send_to_checker(fetch: &State<Fetch>, name: &str, paper: PubPaperPu
         + "/project/"
         + paper.project_id.to_string().as_str();
 
-    let client = fetch.client.lock().await;
-    let res = client
-        .post(checker_url)
-        .header("Content-Type", "application/json")
-        .json(&paper)
-        .send().await;
+    let res;
+    {
+        let client = fetch.client.lock().await;
+        res = client
+            .post(checker_url)
+            .header("Content-Type", "application/json")
+            .json(&paper)
+            .send().await;
+    }
 
     match res {
         Ok(res) => {
@@ -30,11 +34,30 @@ pub async fn send_to_checker(fetch: &State<Fetch>, name: &str, paper: PubPaperPu
 
             let paper_with_actions = res.json::<PaperPushWithAction>().await.unwrap();
 
-            if paper_with_actions.actions.is_some() {
-                // TODO: Execute the actions
+            println!("Paper with actions: {:?}", paper_with_actions.actions);
+
+            let blah = paper_with_actions.clone();
+            match blah.actions.clone() {
+                Some(actions) => {
+                    let paper_with = blah.clone().into();
+
+                    for action in actions {
+                        match action.execute_action(fetch, &paper_with).await {
+                            Ok(_) => (),
+                            Err(s) => {
+                                println!("Error executing action: {}", action.action);
+                                println!("Error: {}", s);
+                            },
+                        }
+                    }
+
+                    // paper_with.into()
+                },
+                // None => blah.into(),
+                None => {}
             }
 
-            // Return the paper
+            // Ok(Json(paper_push))
             Ok(Json(paper_with_actions.into()))
         },
         Err(_) => Err(Status::InternalServerError),

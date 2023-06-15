@@ -3,6 +3,8 @@ use serde::{Deserialize, Serialize};
 use crate::app::providers::models::answer::PubNewAnswer;
 use crate::app::providers::models::paper::PubPaperPush;
 
+use crate::app::modules::action::model::Action;
+
 #[derive(Debug, Clone, Deserialize, Serialize)]
 #[serde(crate = "rocket::serde")]
 pub struct PaperPushWithAction {
@@ -14,13 +16,6 @@ pub struct PaperPushWithAction {
     pub completed: bool,
     pub answers: Option<Vec<PubNewAnswer>>,
     pub actions: Option<Vec<Action>>,
-}
-
-#[derive(Debug, Clone, Deserialize, Serialize)]
-#[serde(crate = "rocket::serde")]
-pub struct Action {
-    pub action: String,
-    pub params: Vec<i32>
 }
 
 impl From<PaperPushWithAction> for PubPaperPush {
