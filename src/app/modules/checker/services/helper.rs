@@ -2,11 +2,13 @@ use rocket::http::Status;
 use rocket::State;
 use rocket::serde::json::Json;
 
-use crate::app::modules::action::model::Action;
 use crate::app::providers::config_getter::ConfigGetter;
 use crate::app::providers::models::paper::PubPaperPush;
+use crate::app::providers::models::record::PubNewRecord;
 use crate::app::providers::services::fetch::Fetch;
 
+use crate::app::modules::action::model::Action;
+use crate::app::modules::action::services::update_record;
 use crate::app::modules::checker::model::PaperPushWithAction;
 
 pub async fn send_to_checker(fetch: &State<Fetch>, name: &str, paper: PubPaperPush) -> Result<Json<PubPaperPush>, Status> {
@@ -34,12 +36,10 @@ pub async fn send_to_checker(fetch: &State<Fetch>, name: &str, paper: PubPaperPu
 
             let paper_with_actions = res.json::<PaperPushWithAction>().await.unwrap();
 
-            println!("Paper with actions: {:?}", paper_with_actions.actions);
-
-            let blah = paper_with_actions.clone();
-            match blah.actions.clone() {
+            let paper_w_clone = paper_with_actions.clone();
+            match paper_w_clone.actions.clone() {
                 Some(actions) => {
-                    let paper_with = blah.clone().into();
+                    let paper_with = paper_w_clone.clone().into();
 
                     for action in actions {
                         match action.execute_action(fetch, &paper_with).await {
@@ -55,6 +55,16 @@ pub async fn send_to_checker(fetch: &State<Fetch>, name: &str, paper: PubPaperPu
                 },
                 // None => blah.into(),
                 None => {}
+            }
+
+            let new_record = PubNewRecord {
+                user_id: paper_with_actions.user_id,
+                record: paper_with_actions.user_record.clone(),
+            };
+
+            match update_record::execute(fetch, paper_with_actions.project_id, new_record).await {
+                Ok(_) => (),
+                Err(status) => return Err(status),
             }
 
             // Ok(Json(paper_push))
