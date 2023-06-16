@@ -39,6 +39,7 @@ pub async fn send_to_checker(fetch: &State<Fetch>, name: &str, paper: PubPaperPu
             let paper_w_clone = paper_with_actions.clone();
             match paper_w_clone.actions.clone() {
                 Some(actions) => {
+                    println!("Actions: {:?}", actions);
                     let paper_with = paper_w_clone.clone().into();
 
                     for action in actions {

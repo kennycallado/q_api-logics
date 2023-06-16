@@ -32,7 +32,14 @@ impl Action {
             },
             "resource_completed" => {
                 for param in self.params.iter() {
-                    services::resource_completed::execute(fetch, param).await?;
+                    let new_paper = PubNewPaper {
+                        user_id: push_paper.user_id,
+                        project_id: push_paper.project_id,
+                        resource_id: param.clone(),
+                        completed: true,
+                    };
+
+                    services::resource_completed::execute(fetch, new_paper).await?;
                 }
             }
             _ => {}
