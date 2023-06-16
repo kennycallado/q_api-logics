@@ -2,7 +2,7 @@ const resources_mood = [ 61, 62, 63, 64, 65, 66 ];
 
 function calculate_mood(answers, mood = 0) {
   for (let answer of answers) {
-    mood += answer.answer;
+    mood += parseInt(answer.answer);
   }
 
   return mood;
@@ -61,14 +61,18 @@ switch (user.record.step) {
     // if (user.record.strike) delete user.record.strike;
     
     /*calculate mood*/
-    let mood = calculate_mood(user.answers);
+    let mood = calculate_mood(user.answers, user.record.mood);
     user.record.mood = mood;
 
     if (user.record.mood <= 50) {
-      // if (user.paper.resource_id === 61) { user.add_resource(resources[1]); user.resource_completed(resources[0]); }
+      // Case that the users get a resource recursively
+      // if (user.paper.resource_id === 61) { user.add_resource(62); user.resource_completed(); }
+      // if (user.paper.resource_id === 62) { user.add_resource(63); user.resource_completed(); }
+      // ...
       break;
     }
 
+    user.resource_completed(...resources_mood);
     user.record.step = 7;
     break;
   
