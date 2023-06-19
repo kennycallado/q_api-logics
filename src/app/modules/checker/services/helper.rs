@@ -42,7 +42,7 @@ pub async fn send_to_checker_cron(fetch: &State<Fetch>, name: &str, id: i32, pap
     // type Error = &'static str;
 
     let checker_url = ConfigGetter::get_entity_url("checker")
-        .unwrap_or("http://localhost:3000/checker/".to_string())
+        .unwrap_or("http://localhost:3000/api/v1/checker/".to_string())
         + name
         + "/project/"
         + id.to_string().as_str();
@@ -118,7 +118,7 @@ pub async fn send_to_checker_cron(fetch: &State<Fetch>, name: &str, id: i32, pap
 
 pub async fn send_to_checker_push(fetch: &State<Fetch>, paper: PubPaperPush) -> Result<Json<PubPaperPush>, Status> {
     let checker_url = ConfigGetter::get_entity_url("checker")
-        .unwrap_or("http://localhost:3000/checker/".to_string())
+        .unwrap_or("http://localhost:3000/api/v1/checker/".to_string())
         + "push/project/"
         + paper.project_id.to_string().as_str();
 
