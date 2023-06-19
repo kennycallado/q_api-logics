@@ -132,6 +132,11 @@ Content-type: application/json
   ]
 }
 
+GET http://localhost:8000/api/v1/logic/checker/steps/project/1
+Accept: application/json
+Authorization: Bearer 
+Content-type: application/json
+
 # }}}
 
 # {{{ Scripts
