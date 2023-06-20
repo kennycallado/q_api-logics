@@ -33,6 +33,7 @@ pub fn options_show(_id: i32) -> Status {
 pub async fn get_project_checker(fetch: &State<Fetch>, claims: AccessClaims, name: &str, id: i32) -> Result<Json<Vec<PubPaper>>, Status> {
     match claims.0.user.role.name.as_str() {
         "admin" => helper::prepare_and_send(fetch, claims.0.user, name, id).await,
+        "robot" => helper::prepare_and_send(fetch, claims.0.user, name, id).await,
         _ => {
             println!("Error: get_project_checker; Role not handled {}", claims.0.user.role.name);
             return Err(Status::BadRequest);
