@@ -13,5 +13,5 @@ pub struct PubRecord {
 #[serde(crate = "rocket::serde")]
 pub struct PubNewRecord {
     pub user_id: i32,
-    pub record: rocket::serde::json::Value,
+    pub record: Option<rocket::serde::json::Value>,
 }
