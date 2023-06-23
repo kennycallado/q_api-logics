@@ -26,11 +26,6 @@ pub async fn prepare_and_send(fetch: &State<Fetch>, _user: UserInClaims, name: &
         }, 
     };
 
-    // TODO: no longer true!
-    // Afeter send it, I have to update the papers
-    // because on push it's done auto but
-    // from cron it isn't
-
     match send_to_checker_cron(fetch, name, id, paper_push).await {
         Ok(papers) => Ok(Json(papers)),
         Err(_) => Err(Status::InternalServerError),
@@ -63,9 +58,9 @@ pub async fn send_to_checker_cron(fetch: &State<Fetch>, name: &str, id: i32, pap
                 return Err("Error getting project lasts");
             }
 
-            // If just to return a status
+            // If just return a status
             // all the code below can be removed
-            // but actions
+            // but **actions** should be executed
             match res.json::<Vec<PaperPushWithAction>>().await {
                 Ok(papers) => {
                     // Execute actions
@@ -85,20 +80,22 @@ pub async fn send_to_checker_cron(fetch: &State<Fetch>, name: &str, id: i32, pap
                                         },
                                     }
                                 }
+
+                                let new_record = PubNewRecord {
+                                    user_id: paper_with.user_id,
+                                    record: Some(paper_with.user_record),
+                                };
+
+                                match update_record::execute(fetch, paper_with.project_id, new_record).await {
+                                    Ok(_) => (),
+                                    Err(status) => {
+                                        println!("Error: {}", status);
+                                    },
+                                }
                             },
                             None => {},
                         }
 
-                        // response_papers.push(PubPaperPush {
-                        //     id: paper.id,
-                        //     user_id: paper.user_id,
-                        //     user_record: paper.user_record.clone(),
-                        //     project_id: paper.project_id,
-                        //     resource_id: paper.resource_id,
-                        //     answers: paper.answers.clone(),
-                        //     completed: paper.completed,
-                        // })
-                        //
                         response_papers.push(PubPaper {
                             id: paper.id,
                             project_id: paper.project_id,
@@ -163,7 +160,7 @@ pub async fn send_to_checker_push(fetch: &State<Fetch>, paper: PubPaperPush) -> 
 
             let new_record = PubNewRecord {
                 user_id: paper_with_actions.user_id,
-                record: paper_with_actions.user_record.clone(),
+                record: Some(paper_with_actions.user_record.clone()),
             };
 
             match update_record::execute(fetch, paper_with_actions.project_id, new_record).await {
