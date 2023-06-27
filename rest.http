@@ -87,11 +87,13 @@ Content-Type: application/json
   ]
 }
 
+# DEPRECATED ?
 GET http://localhost:8000/api/v1/logic/checker
 Accept: application/json
 Authorization: Bearer 
 Content-type: application/json
 
+# DEPRECATED ?
 POST http://localhost:8000/api/v1/logic/checker/push
 Accept: application/json
 Authorization: Bearer 
