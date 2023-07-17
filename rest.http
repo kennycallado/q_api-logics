@@ -34,36 +34,20 @@ Accept: application/json
 # {{{ Checker
 
 POST http://localhost:3000/api/v1/checker/steps/project/1
+
+POST http://localhost:8000/api/v1/logic/steps/project/1
 Accept: application/json
-Content-Type: application/json
+Authorization: Bearer 
+Content-type: application/json
 
 [
   {
     "id": 1,
     "user_id": 1,
-    "user_record": { "step": 5, "mood": 45 },
+    "user_record": {},
     "project_id": 1,
-    "resource_id": 50,
-    "completed": false,
-    "answers": [
-      { "question_id": 1, "answer": 10 },
-      { "question_id": 2, "answer": 10 },
-      { "question_id": 3, "answer": 10 },
-      { "question_id": 5, "answer": 5 }
-    ]
-  },{
-    "id": 1,
-    "user_id": 1,
-    "user_record": { "step": 5, "mood": 45 },
-    "project_id": 1,
-    "resource_id": 50,
-    "completed": false,
-    "answers": [
-      { "question_id": 1, "answer": 10 },
-      { "question_id": 2, "answer": 10 },
-      { "question_id": 3, "answer": 10 },
-      { "question_id": 5, "answer": 5 }
-    ]
+    "resource_id": 0,
+    "completed": false
   }
 ]
 
@@ -87,11 +71,13 @@ Content-Type: application/json
   ]
 }
 
+# DEPRECATED ?
 GET http://localhost:8000/api/v1/logic/checker
 Accept: application/json
 Authorization: Bearer 
 Content-type: application/json
 
+# DEPRECATED ?
 POST http://localhost:8000/api/v1/logic/checker/push
 Accept: application/json
 Authorization: Bearer 

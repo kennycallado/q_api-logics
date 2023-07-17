@@ -14,6 +14,7 @@ pub fn routes() -> Vec<rocket::Route> {
         options_show,
         get_project_checker,
         get_project_checker_none,
+        // post_test_project_checker,
         post_project_checker,
         post_project_checker_none,
     ]
@@ -33,6 +34,7 @@ pub fn options_show(_id: i32) -> Status {
 pub async fn get_project_checker(fetch: &State<Fetch>, claims: AccessClaims, name: &str, id: i32) -> Result<Json<Vec<PubPaper>>, Status> {
     match claims.0.user.role.name.as_str() {
         "admin" => helper::prepare_and_send(fetch, claims.0.user, name, id).await,
+        "robot" => helper::prepare_and_send(fetch, claims.0.user, name, id).await,
         _ => {
             println!("Error: get_project_checker; Role not handled {}", claims.0.user.role.name);
             return Err(Status::BadRequest);
@@ -44,6 +46,24 @@ pub async fn get_project_checker(fetch: &State<Fetch>, claims: AccessClaims, nam
 pub async fn get_project_checker_none(_name: &str, _id: i32) -> Status {
     Status::Unauthorized
 }
+
+// #[post("/<name>/project/<id>", data = "<papers>", rank = 101)]
+// pub async fn post_test_project_checker(
+//     fetch: &State<Fetch>,
+//     claims: AccessClaims,
+//     name: &str,
+//     id: i32, papers: Json<Vec<PubPaperPush>>) -> Result<Json<Vec<PubPaper>>, Status> {
+//     match claims.0.user.role.name.as_str() {
+//         "admin" => helper::send_to_checker_cron(fetch, name, id, papers.into_inner()).await,
+//         "robot" => helper::send_to_checker_cron(fetch, name, id, papers.into_inner()).await,
+//         // "admin" => helper::prepare_and_send(fetch, claims.0.user, name, id).await,
+//         // "robot" => helper::prepare_and_send(fetch, claims.0.user, name, id).await,
+//         _ => {
+//             println!("Error: post_test_project_checker; Role not handled {}", claims.0.user.role.name);
+//             return Err(Status::BadRequest);
+//         }
+//     }
+// }
 
 #[post("/push", data = "<paper>", rank = 101)]
 pub async fn post_project_checker(fetch: &State<Fetch>, claims: AccessClaims, paper: Json<PubPaperPush>) -> Result<Json<PubPaperPush>, Status> {

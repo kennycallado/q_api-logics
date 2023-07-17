@@ -41,7 +41,10 @@ impl Action {
 
                     services::resource_completed::execute(fetch, new_paper).await?;
                 }
-            }
+            },
+            "toggle_active" => {
+                services::toggle_active::execute(fetch, push_paper.user_id).await?;
+            },
             _ => {}
         }
 
