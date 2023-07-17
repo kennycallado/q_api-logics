@@ -18,6 +18,15 @@ pub struct Action {
 impl Action {
     pub async fn execute_action(&self, fetch: &State<Fetch>, push_paper: &PubPaperPush) -> Result<Status, Status> {
         match self.action.as_str() {
+            "send_message" => {
+                for param in self.params.iter() {
+                    let message_id = param;
+                    let user_id = push_paper.user_id;
+
+                    services::send_message::execute(fetch, *message_id, user_id).await?;
+                }
+
+            },
             "add_resource" => {
                 for param in self.params.iter() {
                     let new_paper = PubNewPaper {
@@ -45,7 +54,7 @@ impl Action {
             "toggle_active" => {
                 services::toggle_active::execute(fetch, push_paper.user_id).await?;
             },
-            _ => {}
+            _ => println!("Action not found; {}", self.action),
         }
 
         Ok(Status::Ok)
