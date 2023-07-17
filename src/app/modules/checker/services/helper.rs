@@ -27,14 +27,12 @@ pub async fn prepare_and_send(fetch: &State<Fetch>, _user: UserInClaims, name: &
     };
 
     match send_to_checker_cron(fetch, name, id, paper_push).await {
-        Ok(papers) => Ok(Json(papers)),
+        Ok(papers) => Ok(papers),
         Err(_) => Err(Status::InternalServerError),
     }
 }
 
-pub async fn send_to_checker_cron(fetch: &State<Fetch>, name: &str, id: i32, papers: Vec<PubPaperPush>)
--> Result<Vec<PubPaper>, &'static str> {
-    // type Error = &'static str;
+pub async fn send_to_checker_cron(fetch: &State<Fetch>, name: &str, id: i32, papers: Vec<PubPaperPush>) -> Result<Json<Vec<PubPaper>>, Status> { // type Error = &'static str;
 
     let checker_url = ConfigGetter::get_entity_url("checker")
         .unwrap_or("http://localhost:3000/api/v1/checker/".to_string())
@@ -55,7 +53,8 @@ pub async fn send_to_checker_cron(fetch: &State<Fetch>, name: &str, id: i32, pap
     match res  {
         Ok(res) => {
             if !res.status().is_success() {
-                return Err("Error getting project lasts");
+                println!("Error getting project lasts");
+                return Err(Status::InternalServerError)
             }
 
             // If just return a status
@@ -104,12 +103,18 @@ pub async fn send_to_checker_cron(fetch: &State<Fetch>, name: &str, id: i32, pap
                         })
                     }
 
-                    Ok(response_papers)
+                    Ok(Json(response_papers))
                 },
-                Err(_) => return Err("Error getting project lasts; Response"),
+                Err(_) => {
+                    println!("Error getting project lasts; Response");
+                    return Err(Status::InternalServerError)
+                }
             }
         },
-        Err(_) => return Err("Error getting project lasts; Request"),
+        Err(_) => {
+            println!("Error getting project lasts; Response");
+            return Err(Status::InternalServerError)
+        }
     }
 }
 
