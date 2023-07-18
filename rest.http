@@ -108,7 +108,7 @@ Content-type: application/json
   "user_id": 1,
   "user_record": { "step": 5, "mood": 45 },
   "project_id": 1,
-  "resource_id": 50,
+  "resource_id": 6,
   "completed": false,
   "answers": [
     { "question_id": 1, "answer": "10" },
