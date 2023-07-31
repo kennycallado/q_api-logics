@@ -83,7 +83,10 @@ async fn get_users_paper(fetch: &State<Fetch>, project_id: i32) -> Result<Vec<Pu
                 Err(_) => return Err("Error getting project lasts; Response"),
             }
         },
-        Err(_) => return Err("Error getting project lasts; Request"),
+        Err(e) => {
+            println!("Error: {:?}", e);
+            return Err("Error getting project lasts; Request")
+        },
     }
 }
 
@@ -122,48 +125,9 @@ async fn get_users_record_via_user(fetch: &State<Fetch>, project_id: i32) -> Res
                 Err(_) => return Err("Error getting user last records; Response"),
             }
         },
-        Err(_) => {
+        Err(e) => {
+            println!("Error: {:?}", e);
             return Err("Error getting user last records; Request");
         },
-    }
-}
-
-async fn get_users_record_via_project(fetch: &State<Fetch>, project_id: i32) -> Result<Vec<PubRecord>, &'static str> {
-    // type Error = &'static str;
-
-    let robot_token = match Fetch::robot_token().await {
-        Ok(token) => token,
-        Err(_) => return Err("Error getting robot token"),
-    };
-
-    let project_url = ConfigGetter::get_entity_url("project")
-        .unwrap_or("http://localhost:8051/api/v1/project/".to_string())
-        + project_id.to_string().as_str()
-        + "/record/lasts";
-
-    let res;
-    {
-        let client = fetch.client.lock().await;
-        res = client
-            .get(project_url)
-            .bearer_auth(&robot_token)
-            .header("Accept", "application/json")
-            .header("Content-Type", "application/json")
-            .send()
-            .await;
-    }
-
-    match res  {
-        Ok(res) => {
-            if !res.status().is_success() {
-                return Err("Error getting project lasts");
-            }
-
-            match res.json::<PubProjectWithRecords>().await {
-                Ok(project_records) => Ok(project_records.records.unwrap_or(vec![])),
-                Err(_) => return Err("Error getting project lasts; Response"),
-            }
-        },
-        Err(_) => return Err("Error getting project lasts; Request"),
     }
 }

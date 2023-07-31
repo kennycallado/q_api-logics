@@ -105,13 +105,15 @@ pub async fn send_to_checker_cron(fetch: &State<Fetch>, name: &str, id: i32, pap
 
                     Ok(Json(response_papers))
                 },
-                Err(_) => {
+                Err(e) => {
+                    println!("Error: {:?}", e);
                     println!("Error getting project lasts; Response");
                     return Err(Status::InternalServerError)
                 }
             }
         },
-        Err(_) => {
+        Err(e) => {
+            println!("Error: {:?}", e);
             println!("Error getting project lasts; Response");
             return Err(Status::InternalServerError)
         }
@@ -176,6 +178,9 @@ pub async fn send_to_checker_push(fetch: &State<Fetch>, paper: PubPaperPush) -> 
             // Ok(Json(paper_push))
             Ok(Json(paper_with_actions.into()))
         },
-        Err(_) => Err(Status::InternalServerError),
+        Err(e) => {
+            println!("Error: {:?}", e);
+            Err(Status::InternalServerError)
+        },
     }
 }
