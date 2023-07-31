@@ -135,7 +135,11 @@ Content-type: application/json
 # cat SCRIPTS/push_example.js | curl -H 'Authorization: Bearer '$TOKEN --data-binary @- http://localhost:8041/api/v1/logic/script/push/project/1
 # cat SCRIPTS/cron_example.js | curl -H 'Authorization: Bearer '$TOKEN --data-binary @- http://localhost:8041/api/v1/logic/script/steps/project/1
 
+# cat SCRIPTS/cron_example.js | curl -H 'Authorization: Bearer '$TOKEN --data-binary @- https://questions.kennycallado.dev/api/v1/logic/script/steps/project/1
+
 GET http://localhost:8000/api/v1/logic/script/push/project/1
+
+GET https://questions.kennycallado.dev/api/v1/logic/script/push/project/6
 Accept: application/json
 Authorization: Bearer 
 Content-type: application/json
