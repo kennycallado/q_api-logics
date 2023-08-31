@@ -14,21 +14,22 @@ use rocket::tokio::sync::Mutex;
 #[cfg(feature = "cron")]
 use tokio_cron_scheduler::{Job, JobScheduler, JobSchedulerError};
 
-#[cfg(feature = "db")]
+#[cfg(all(feature = "db", feature = "cron"))]
 use diesel::{PgConnection, ConnectionError};
-#[cfg(feature = "db")]
+#[cfg(all(feature = "db", feature = "cron"))]
 use diesel::prelude::*;
-#[cfg(feature = "db")]
+#[cfg(feature = "cron")]
 use crate::database::schema::cronjobs;
 
 #[cfg(feature = "cron")]
 use crate::app::providers::models::cronjob::{PubCronJob, PubNewCronJob};
 
-#[cfg(feature = "db")]
+#[cfg(all(feature = "db", feature = "cron"))]
 use crate::app::providers::config_getter::ConfigGetter;
-#[cfg(feature = "db")]
+#[cfg(all(feature = "db", feature = "cron"))]
 use crate::app::providers::models::cronjob::DbCron;
 
+#[cfg(feature = "cron")]
 use super::claims::{Claims, UserInClaims};
 
 #[cfg(feature = "cron")]
