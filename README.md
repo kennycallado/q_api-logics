@@ -1,5 +1,52 @@
 # q_api-base
 
+## LOG * migration to sqlx
+
+- install sqlx cli
+``` bash
+cargo install sqlx-cli --no-default-features --features postgres
+
+# or just
+
+cargo install sqlx-cli 
+```
+
+cada instrucción debe contener DATABASE_URL o existir en .env
+
+- no estoy seguro si es necesario crear la base de datos
+``` bash
+DATABASE_URL="postgres://base:base@localhost/base" sqlx database create
+# sqlx database drop
+```
+
+- prepare migrations
+``` bash
+sqlx migrate add --source ./src/database/migrations/ -r --timestamp <migration_name>
+
+# then
+
+sqlx migrate run --source ./src/database/migrations/
+```
+
+- prepare offline mode
+``` bash
+ cargo sqlx prepare
+```
+
+- update features
+
+En general...
+``` rust
+// old
+#[cfg(feature = "db")]
+// new
+#[cfg(feature = "db_diesel")]
+```
+En los que usen sqlx
+``` rust
+#[cfg(feature = "db_sqlx")]
+```
+
 ## Changelog
 
 ### v0.1.5
