@@ -4,7 +4,7 @@ use rocket::fs::TempFile;
 use rocket::http::Status;
 use rocket::response::content::RawText;
 
-pub async fn read(name: String, id: i32) -> Result<rocket::tokio::fs::File, Status> {
+pub async fn read(name: &str, id: i32) -> Result<rocket::tokio::fs::File, Status> {
     let mut path = std::path::Path::new("SCRIPTS/").join(&id.to_string());
 
     if name != "push" {

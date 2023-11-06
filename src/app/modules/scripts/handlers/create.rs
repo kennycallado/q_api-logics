@@ -4,7 +4,7 @@ use rocket::fs::TempFile;
 use rocket::http::Status;
 use rocket::response::content::RawText;
 
-pub async fn save(name: String, id: i32, script: Data<'_>) -> Result<Status, Status> {
+pub async fn save(name: &str, id: i32, script: Data<'_>) -> Result<Status, Status> {
     let mut path = std::path::Path::new("SCRIPTS/").join(&id.to_string());
 
     if !path.exists() {
